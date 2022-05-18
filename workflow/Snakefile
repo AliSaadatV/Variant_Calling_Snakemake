@@ -25,7 +25,7 @@ def get_recal_resources_command(resource):
 
     return command
 
-def get_pedigree_command(config):
+def get_pedigree_command(resource):
 
     command = ""
 
@@ -34,7 +34,7 @@ def get_pedigree_command(config):
 
     return command
 
-def get_vqsr_DP_option(config):
+def get_vqsr_DP_option(resource):
 
     if config['DATA'] == "WES":
         command = ""
@@ -44,7 +44,7 @@ def get_vqsr_DP_option(config):
 
     return command
 
-def get_vqsr_InbreedingCoefficient_option(config):
+def get_vqsr_InbreedingCoefficient_option(resource):
 
     if config['INBREED_COEFF_FILTER'] == "EXCLUDE":
         command = ""
@@ -86,15 +86,11 @@ if config['PED'] == "":
     rule all:
         input:
             expand("../results/qc/fastqc/{sample}_{read}_fastqc.html", sample = SAMPLES, read = [1, 2]),
-            directory("../results/genomicsDB/{CHROMS}.db"),
-            "../results/genotypes/{CHROMS}.vcf.gz",
             "../results/vcf/refined_GQ.vcf.gz"
 if config['PED'] != "":
     rule all:
         input:
             expand("../results/qc/fastqc/{sample}_{read}_fastqc.html", sample = SAMPLES, read = [1, 2]),
-            directory("../results/genomicsDB/{CHROMS}.db"),
-            "../results/genotypes/{CHROMS}.vcf.gz",
             "../results/vcf/refined_GQ_denovo.vcf.gz"
 
 ##### Load rules #####
@@ -105,7 +101,7 @@ include: "rules/02_gatk_MarkDuplicates.smk"
 include: "rules/03_gatk_BaseRecalibrator.smk"
 include: "rules/04_gatk_ApplyBQSR.smk"
 include: "rules/05_gatk_HaplotypeCaller_cohort.smk"
-include: "rules/06_gatk_GenomicsDBImport.smk" "
+include: "rules/06_gatk_GenomicsDBImport.smk" 
 include: "rules/07_gatk_GenotypeGVCFs.smk"
 include: "rules/08_gatk_GatherVCF.smk" 
 

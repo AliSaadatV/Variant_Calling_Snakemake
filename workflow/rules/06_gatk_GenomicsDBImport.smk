@@ -5,7 +5,7 @@ rule GenomicsDBImport:
     output:
         db = directory("../results/genomicsDB/{CHROMS}.db")
     params:
-        gvcfs=lambda wildcards, input: [f" -V {v}" for v in input["gvcfs_list"]]
+        gvcfs=lambda wildcards, input: [f" -V {v}" for v in input["gvcfs_list"]],
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
         tdir = config['TEMPDIR']
     log:

@@ -46,8 +46,8 @@ rule hard_indel:
         raw_vcf = "../results/vcf/all_raw.vcf.gz",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
-        snp_raw = temp("../results/hard/indel_raw.vcf.gz"),
-        snp_filtered = temp("../results/hard/indel_filtered.vcf.gz")
+        indel_raw = temp("../results/hard/indel_raw.vcf.gz"),
+        indel_filtered = temp("../results/hard/indel_filtered.vcf.gz")
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
         tdir = config['TEMPDIR']
