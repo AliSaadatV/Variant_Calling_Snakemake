@@ -19,10 +19,10 @@ rule refinement:
         "../envs/gatk4.yaml"
     message:
         "Genotype Refinement"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} \
-        CalculateGenotypePosteriors \
+        gatk CalculateGenotypePosteriors \
         -V {input.filtered_vcf} \
         -O  {output.refined} \
         --supporting-callsets {input.gnomad} \
@@ -30,7 +30,7 @@ rule refinement:
         {params.ped} \
         --temp-dir {params.tdir} &> {log.posterior}
 
-        gatk --java-options {params.maxmemory} VariantFiltration \
+        gatk VariantFiltration \
         -R {input.refgenome} \
         -V {output.refined} \
         --genotype-filter-expression "GQ < 20" --genotype-filter-name "lowGQ" \

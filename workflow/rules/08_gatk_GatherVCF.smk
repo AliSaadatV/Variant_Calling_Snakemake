@@ -16,10 +16,10 @@ rule GatherVCF:
         "../envs/gatk4.yaml"
     message:
         "Gathering VCF for each chromosome"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} " \
-        GatherVcfs \
+        gatk GatherVcfs \
         -I {params.vcfs} \
         -O {output.file} \
         --tmp-dir {params.tdir} &> {log}

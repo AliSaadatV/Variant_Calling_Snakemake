@@ -18,8 +18,9 @@ rule gatk_BaseRecalibrator:
         "../envs/gatk4.yaml"
     message:
         "Generating a recalibration table for {input.bams}"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
-        """gatk BaseRecalibrator --java-options {params.maxmemory} \
+        """gatk BaseRecalibrator \
         -I {input.bams} \
         -R {input.refgenome} \
         -O {output} \

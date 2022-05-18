@@ -17,16 +17,17 @@ rule hard_snp:
         "../envs/gatk4.yaml"
     message:
         "Running hard filter snp"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} SelectVariants \
+        gatk SelectVariants \
         -R {input.refgenome} \
         -V {input.raw_vcf} \
         -select-type SNP \
         -O {output.snp_raw} \
         --temp-dir {params.tdir} &> {log.select}
 
-        gatk --java-options {params.maxmemory} VariantFiltration \
+        gatk VariantFiltration \
         -R {input.refgenome} \
         -V {output.snp_raw} \
         --filter-expression "QD < 2.0" --filter-name "QD_lt_2" \
@@ -59,9 +60,10 @@ rule hard_indel:
         "../envs/gatk4.yaml"
     message:
         "Running hard filter indel"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} SelectVariants \
+        gatk SelectVariants \
         -R {input.refgenome} \
         -V {input.raw_vcf} \
         -select-type INDEL \
@@ -69,7 +71,7 @@ rule hard_indel:
         -O {output.indel_raw} \
         --temp-dir {params.tdir} &> {log.select}
 
-        gatk --java-options {params.maxmemory} VariantFiltration \
+        gatk VariantFiltration \
         -R {input.refgenome} \
         -V {output.indel_raw} \
         --filter-expression "QD < 2.0" --filter-name "QD_lt_2" \
@@ -101,15 +103,16 @@ rule merge_filtered:
         "../envs/gatk4.yaml"
     message:
         "Running hard filter indel"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} MergeVcfs \
+        gatk MergeVcfs \
         -I {input.snp_filtered} \
         -I {input.indel_filtered} \
         -O {output.merged_total} \
         --temp-dir {params.tdir} &> {log.merge}
 
-        gatk --java-options {params.maxmemory}  SelectVariants \
+        gatk SelectVariants \
         -R {input.refgenome} \
         -V {output.merged_total} \
         -O {output.merged_pass} \

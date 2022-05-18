@@ -18,8 +18,9 @@ rule gatk_ApplyBQSR:
         "../envs/gatk4.yaml"
     message:
         "Applying base quality score recalibration and producing a recalibrated BAM file for {input.bam}"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
-        """gatk ApplyBQSR --java-options {params.maxmemory} \
+        """gatk ApplyBQSR \
         -I {input.bam} \
         -bqsr {input.recal} \
         -R {input.refgenome} \

@@ -8,10 +8,11 @@ rule fastqc:
         "logs/fastqc/{sample}.log"
     benchmark:
         "benchmarks/fastqc/{sample}.tsv"
-    threads: config['THREADS']
+    #threads: config['THREADS']
     conda:
         "../envs/fastqc.yaml"
     message:
         "Undertaking quality control checks on raw sequence data for {input}"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
-        "fastqc {input} -o ../results/qc/fastqc/ -t {threads} &> {log}"
+        "fastqc {input} -o ../results/qc/fastqc/ &> {log}"

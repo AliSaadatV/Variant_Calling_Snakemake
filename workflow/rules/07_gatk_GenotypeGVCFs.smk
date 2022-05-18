@@ -16,10 +16,10 @@ rule GenotypeGVCFs:
         "../envs/gatk4.yaml"
     message:
         "Performing joint genotyping on one or more samples pre-called with HaplotypeCaller for {input.db}"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} \
-        GenotypeGVCFs \
+        gatk GenotypeGVCFs \
         -R {input.refgenome} \
         -O {output} \
         --only-output-calls-starting-in-intervals \

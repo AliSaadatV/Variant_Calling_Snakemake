@@ -16,10 +16,10 @@ rule GenomicsDBImport:
         "../envs/gatk4.yaml"
     message:
         "Import into genomics db for {output.db}"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory}" \
-        GenomicsDBImport \
+        gatk GenomicsDBImport \
         --genomicsdb-workspace-path {output.db} \
         --L {wildcards.CHROMS} \
         {params.gvcfs} \

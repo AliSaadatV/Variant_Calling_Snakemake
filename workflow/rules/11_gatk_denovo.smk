@@ -16,10 +16,10 @@ rule denovo:
         "../envs/gatk4.yaml"
     message:
         "Possible denovo"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} \
-        VariantAnnotator \
+        gatk VariantAnnotator \
         -R {input.refgenome} \
         -V {input.refined_GQ_vcf} \
         -O  {output} \

@@ -22,9 +22,10 @@ rule VQSR_snp:
         "../envs/gatk4.yaml"
     message:
         "Running VQSR snp"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} VariantRecalibrator\
+        gatk VariantRecalibrator\
         -tranche 100.0 -tranche 99.95 -tranche 99.9 \
 	    -tranche 99.5 -tranche 99.0 -tranche 97.0 -tranche 96.0 \
 	    -tranche 95.0 -tranche 94.0 \
@@ -69,9 +70,10 @@ rule VQSR_indel:
         "../envs/gatk4.yaml"
     message:
         "Running VQSR indel"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} VariantRecalibrator \
+        gatk VariantRecalibrator \
         -tranche 100.0 -tranche 99.95 -tranche 99.9 \
         -tranche 99.5 -tranche 99.0 -tranche 97.0 -tranche 96.0 \
         -tranche 95.0 -tranche 94.0 \
@@ -118,9 +120,10 @@ rule Apply_VQSR:
         "../envs/gatk4.yaml"
     message:
         "Running apply VQSR"
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk --java-options {params.maxmemory} ApplyVQSR \
+        gatk ApplyVQSR \
         -V {input.raw_vcf} \
         --recal-file {input.recal_snp} \
         -mode SNP \
@@ -130,7 +133,7 @@ rule Apply_VQSR:
         --temp-dir {params.tdir} \
         -O {output.apply_snp} &> {log.apply_vqsr_snp}
 
-        gatk --java-options {params.maxmemory} ApplyVQSR \
+        gatk ApplyVQSR \
         -V {output.apply_snp} \
         --recal-file {input.recal_indel} \
         -mode INDEL \
@@ -140,7 +143,7 @@ rule Apply_VQSR:
         --temp-dir {params.tdir} \
         -O {output.apply_indel}  &> {log.apply_vqsr_indel}
 
-        gatk --java-options {params.maxmemory} SelectVariants \
+        gatk SelectVariants \
         -R {input.refgenome} \
         -V {output.apply_indel} \
         -O {output.select_pass} \
