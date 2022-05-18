@@ -1,0 +1,17 @@
+rule fastqc:
+    input:
+        ["../data/fastq/{sample}_1.fastq.gz", "../data/fastq/{sample}_2.fastq.gz"]
+    output:
+        html = ["../results/qc/fastqc/{sample}_1_fastqc.html", "../results/qc/fastqc/{sample}_2_fastqc.html"],
+        zip = ["../results/qc/fastqc/{sample}_1_fastqc.zip", "../results/qc/fastqc/{sample}_2_fastqc.zip"]
+    log:
+        "logs/fastqc/{sample}.log"
+    benchmark:
+        "benchmarks/fastqc/{sample}.tsv"
+    threads: config['THREADS']
+    conda:
+        "../envs/fastqc.yaml"
+    message:
+        "Undertaking quality control checks on raw sequence data for {input}"
+    shell:
+        "fastqc {input} -o ../results/qc/fastqc/ -t {threads} &> {log}"

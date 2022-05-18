@@ -1,0 +1,88 @@
+##############################
+###### Overall workflow ######
+##############################
+
+# Specify the path to .ped file if you want to use it. Otherwise leave it empty.
+# Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531972-PED-Pedigree-format
+PED: ""
+
+# Choose between ('VQSR' and 'HARD')
+# Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531112?id=2806
+# Check https://gatk.broadinstitute.org/hc/en-us/articles/360037499012
+FILTER: ""
+
+# File path to the reference genome (.fasta)
+REFGENOME: "/work/gr-fe/saadat/Reference_Genome/GRCH38_no_alt/GCA_000001405.15_GRCh38_no_alt_analysis_set.fa.gz"
+
+# File path to dbSNP database
+dbSNP: "/work/gr-fe/saadat/pri/known_sites/dbsnp_146.hg38.vcf.gz"
+
+# Path to HapMap
+HAPMAP: "/work/gr-fe/saadat/pri/known_sites/hapmap_3.3.hg38.vcf.gz"
+
+# Path to OMNI
+OMNI: "/work/gr-fe/saadat/pri/known_sites/1000G_omni2.5.hg38.vcf.gz"
+
+# Path to 1000G
+KG: "/work/gr-fe/saadat/pri/known_sites/1000G_phase1.snps.high_confidence.hg38.vcf.gz"
+
+# Path to Mills
+MILLS: "/work/gr-fe/saadat/pri/known_sites/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz"
+
+# Path to AxiomPoly (Download First!)
+AXIOM: "/work/gr-fe/saadat/pri/known_sites/Axiom_Exome_Plus.genotypes.all_populations.poly.hg38.vcf.gz"
+
+# Path to gnomad
+
+GNOMAD: "/work/gr-fe/saadat/pri/known_sites/af-only-gnomad.hg38.vcf.gz"
+
+# Temporary file directory
+TEMPDIR: "/scratch/saadat/temp/"
+
+# Specify type of NGS sequencing ('WES' or 'WGS'). Use for VQSR filtering
+DATA: "WES"
+
+# Inbreeding Coefficient: This option is used in VQSR. if you have less than 10 samples, or if samples are related (families), put 'EXCLUDE'. Otherwise put 'INCLUDE'
+INBREED_COEFF_FILTER: "EXCLUDE"
+
+# Whole exome sequence settings (leave blank if analysing other data such as whole genome sequence data)
+WES:
+  # File path to the exome capture regions over which to operate
+  INTERVALS: ""
+  # Padding (in bp) to add to each region
+  PADDING: ""
+
+##############################
+##### Pipeline resources #####
+##############################
+
+# Number of threads to use per rule/sample for multithreaded rules, multithreading will significantly speed up these rules (diminishing speed gains beyond 8 threads)
+THREADS: 8
+
+# Maximum memory usage per rule/sample (eg. '40g' for 40 gigabytes, this should suffice for exomes)
+MAXMEMORY: "40g"
+
+# Maximum number of GPU's to be used per rule/sample for gpu-accelerated runs (eg `1` for 1 GPU)
+GPU: 0
+
+##############################
+########## Trimming ##########
+##############################
+
+# Whether or not to trim the raw fastq reads (either 'Yes' or 'No')
+TRIM: ""
+
+# If trimming, choose the adapter sequence to be trimmed (eg. `--illumina`, `--nextera` or `--small_rna`) or pass adapter sequences to the `-a` and `-a2` flags
+TRIMMING:
+  ADAPTERS: ""
+
+##############################
+##### Base recalibration #####
+##############################
+
+# List of resources to used for base recalibration
+RECALIBRATION:
+  RESOURCES:
+    - /work/gr-fe/saadat/pri/known_sites/dbsnp_146.hg38.vcf.gz
+    - /work/gr-fe/saadat/pri/known_sites/Homo_sapiens_assembly38.known_indels.vcf.gz
+    - /work/gr-fe/saadat/pri/known_sites/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz

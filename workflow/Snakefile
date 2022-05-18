@@ -1,0 +1,142 @@
+"""
+Author: Ali Saadat
+Affiliation: EPFL
+Aim: A simple Snakemake workflow to process paired-end sequencing data (WGS) using bwa/GATK4. 
+Date created: 16-May-2022
+Adapted from https://github.com/ESR-NZ/human_genomics_pipeline
+"""
+
+##### Set up wildcards #####
+
+# Define samples from fastq dir and chromosmes
+SAMPLES, = glob_wildcards("../data/fastq/{sample}_1.fastq.gz")
+CHROMS = [str(c) for c in range(1, 23)] + ["X", "Y", "M"]
+
+##### Setup helper functions #####
+import csv
+import glob
+
+def get_recal_resources_command(resource):
+    """Return a string, a portion of the gatk BaseRecalibrator command (used in the gatk_BaseRecalibrator rule)
+    which dynamically includes each of the recalibration resources defined by the user
+    in the configuration file. For each recalibration resource (element in the list), we construct the command by
+    adding --known-sites <recalibration resource file>
+    """
+    
+    command = ""
+    
+    for resource in config['RECALIBRATION']['RESOURCES']:
+        command += "--known-sites " + resource + " "
+
+    return command
+
+def get_pedigree_command(config):
+    """"Returns a string for pedigree option in the following rules: HC, GenotypeGVC, CalculateGenotypePosterior, VariantAnnotator
+    """"
+
+    command = ""
+
+    if config['PED'] != "":
+        command = "-ped " + config['PED']
+
+    return command
+
+def get_vqsr_DP_option(config):
+    """"Returns a string, if data is WGS, we use DP in VQSR. but for WES we dont use DP.
+    """"
+
+    if config['DATA'] == "WES":
+        command = ""
+    
+    if config['DATA'] == "WGS":
+        command = "-an DP"
+
+    return command
+
+def get_vqsr_InbreedingCoefficient_option(config):
+    """"Returns a string, This option is used in VQSR. if you have less than 10 samples, or if samples are related (families), put 'EXCLUDE'. Otherwise put 'INCLUDE'.
+    """"
+
+    if config['INBREED_COEFF_FILTER'] == "EXCLUDE":
+        command = ""
+    
+    if config['INBREED_COEFF_FILTER'] == "INCLUDE":
+        command = "-an InbreedingCoeff"
+
+    return command
+
+def get_wes_intervals_command(resource):
+    """Return a string, a portion of the gatk command's (used in several gatk rules) which builds a flag
+    formatted for gatk based on the configuration file. We construct the command by adding
+    --L <exome capture file>. If the user provides nothing for these configurable
+    options, an empty string is returned
+    """
+    
+    command = ""
+
+    command = "--L " + config['WES']['PADDING'] + " "
+    
+    if config['WES']['INTERVALS'] == "":
+        command = ""
+
+    return command
+
+def get_wes_padding_command(resource):
+    """Return a string, a portion of the gatk command's (used in several gatk rules) which builds a flag
+    formatted for gatk based on the configuration file. We construct the command by adding --ip <exome capture file>.
+    If the user provides nothing for these configurable
+    options, an empty string is returned
+    """
+    
+    command = ""
+
+    command = "--ip " + config['WES']['PADDING'] + " "
+    
+    if config['WES']['PADDING'] == "":
+        command = ""
+
+    return command
+
+#### Set up report #####
+
+report: "report/workflow.rst"
+
+##### Target rules depnding on the existense of pedigree file #####
+
+if config['PED'] == "":
+    rule all:
+        input:
+            expand("../results/qc/fastqc/{sample}_{read}_fastqc.html", sample = SAMPLES, read = [1, 2]),
+            directory("../results/genomicsDB/{CHROMS}.db"),
+            "../results/genotypes/{CHROMS}.vcf.gz",
+            "../results/vcf/refined_GQ.vcf.gz"
+if config['PED'] != "":
+    rule all:
+        input:
+            expand("../results/qc/fastqc/{sample}_{read}_fastqc.html", sample = SAMPLES, read = [1, 2]),
+            directory("../results/genomicsDB/{CHROMS}.db"),
+            "../results/genotypes/{CHROMS}.vcf.gz",
+            "../results/vcf/refined_GQ_denovo.vcf.gz"
+
+##### Load rules #####
+
+include: "rules/00_fastqc.smk"
+include: "rules/01_bwa_mem.smk"
+include: "rules/02_gatk_MarkDuplicates.smk" 
+include: "rules/03_gatk_BaseRecalibrator.smk"
+include: "rules/04_gatk_ApplyBQSR.smk"
+include: "rules/05_gatk_HaplotypeCaller_cohort.smk"
+include: "rules/06_gatk_GenomicsDBImport.smk" "
+include: "rules/07_gatk_GenotypeGVCFs.smk"
+include: "rules/08_gatk_GatherVCF.smk" 
+
+if config['FILTER'] == "VQSR": 
+    include: "rules/09_gatk_VQSR.smk"
+
+if config['FILTER'] == "HARD": 
+    include: "rules/09_gatk_HARD.smk"
+
+include: "rules/10_gatk_GenotypeRefinement.smk"
+
+if config['PED'] != "":
+    include: "rules/11_gatk_denovo.smk"
