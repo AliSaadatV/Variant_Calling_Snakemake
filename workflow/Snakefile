@@ -17,11 +17,6 @@ import csv
 import glob
 
 def get_recal_resources_command(resource):
-    """Return a string, a portion of the gatk BaseRecalibrator command (used in the gatk_BaseRecalibrator rule)
-    which dynamically includes each of the recalibration resources defined by the user
-    in the configuration file. For each recalibration resource (element in the list), we construct the command by
-    adding --known-sites <recalibration resource file>
-    """
     
     command = ""
     
@@ -31,8 +26,6 @@ def get_recal_resources_command(resource):
     return command
 
 def get_pedigree_command(config):
-    """"Returns a string for pedigree option in the following rules: HC, GenotypeGVC, CalculateGenotypePosterior, VariantAnnotator
-    """"
 
     command = ""
 
@@ -42,8 +35,6 @@ def get_pedigree_command(config):
     return command
 
 def get_vqsr_DP_option(config):
-    """"Returns a string, if data is WGS, we use DP in VQSR. but for WES we dont use DP.
-    """"
 
     if config['DATA'] == "WES":
         command = ""
@@ -54,8 +45,6 @@ def get_vqsr_DP_option(config):
     return command
 
 def get_vqsr_InbreedingCoefficient_option(config):
-    """"Returns a string, This option is used in VQSR. if you have less than 10 samples, or if samples are related (families), put 'EXCLUDE'. Otherwise put 'INCLUDE'.
-    """"
 
     if config['INBREED_COEFF_FILTER'] == "EXCLUDE":
         command = ""
@@ -66,11 +55,6 @@ def get_vqsr_InbreedingCoefficient_option(config):
     return command
 
 def get_wes_intervals_command(resource):
-    """Return a string, a portion of the gatk command's (used in several gatk rules) which builds a flag
-    formatted for gatk based on the configuration file. We construct the command by adding
-    --L <exome capture file>. If the user provides nothing for these configurable
-    options, an empty string is returned
-    """
     
     command = ""
 
@@ -82,11 +66,6 @@ def get_wes_intervals_command(resource):
     return command
 
 def get_wes_padding_command(resource):
-    """Return a string, a portion of the gatk command's (used in several gatk rules) which builds a flag
-    formatted for gatk based on the configuration file. We construct the command by adding --ip <exome capture file>.
-    If the user provides nothing for these configurable
-    options, an empty string is returned
-    """
     
     command = ""
 
