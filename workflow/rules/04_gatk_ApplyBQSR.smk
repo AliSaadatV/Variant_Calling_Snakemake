@@ -18,7 +18,6 @@ rule gatk_ApplyBQSR:
         "../envs/gatk4.yaml"
     message:
         "Applying base quality score recalibration and producing a recalibrated BAM file for {input.bam}"
-    threads: 2
     resources: cpus=2, mem_mb=4000, time_min=1440
     shell:
         """gatk ApplyBQSR \
