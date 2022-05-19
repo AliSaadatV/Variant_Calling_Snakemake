@@ -104,7 +104,7 @@ include: "rules/05_gatk_HaplotypeCaller_cohort.smk"
 
 rule index:
     input:
-        expand("../results/called/{sample}_raw_snps_indels_tmp.g.vcf", sample = SAMPLES)
+        "../results/called/{sample}_raw_snps_indels_tmp.g.vcf"
     output:
         "../results/called/{sample}_raw_snps_indels_tmp.g.vcf.idx"
     log:
