@@ -4,7 +4,7 @@ rule refinement:
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME']),
         gnomad = expand("{gnomad}", gnomad = config['GNOMAD'])
     output:
-        refined = temp("../results/vcf/refined.vcf.gz"),
+        refined = "../results/vcf/refined.vcf.gz",
         refined_GQ = "../results/vcf/refined_GQ.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),

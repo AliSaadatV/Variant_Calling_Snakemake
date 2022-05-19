@@ -2,7 +2,7 @@ rule gatk_MarkDuplicates:
     input:
         "../results/mapped/{sample}.bam"
     output:
-        bam = temp("../results/mapped/{sample}_mkdups.bam"),
+        bam = "../results/mapped/{sample}_mkdups.bam",
         metrics = "../results/mapped/{sample}_mkdups_metrics.txt"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP']),
@@ -16,7 +16,7 @@ rule gatk_MarkDuplicates:
         "../envs/gatk4.yaml"
     message:
         "Locating and tagging duplicate reads in {input}"
-    resources: cpus=28, mem_mb=60000, time_min=1440
+    resources: cpus=28, mem_mb=40000, time_min=1440
     shell:
         """gatk MarkDuplicatesSpark --java-options {params.maxmemory} \
         -I {input} \

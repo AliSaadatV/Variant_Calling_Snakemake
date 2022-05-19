@@ -3,8 +3,8 @@ rule VQSR_snp:
         raw_vcf = "../results/vcf/all_raw.vcf.gz",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
-        recal_snp = temp("../results/vqsr/snp.recal"),
-        tranches_snp = temp("../results/vqsr/snp.tranches")
+        recal_snp = "../results/vqsr/snp.recal",
+        tranches_snp = "../results/vqsr/snp.tranches"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
@@ -54,8 +54,8 @@ rule VQSR_indel:
         raw_vcf = "../results/vcf/all_raw.vcf.gz",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
-        recal_indel = temp("../results/vqsr/indel.recal"),
-        tranches_indel = temp("../results/vqsr/indel.tranches")
+        recal_indel = "../results/vqsr/indel.recal",
+        tranches_indel = "../results/vqsr/indel.tranches"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
@@ -104,7 +104,7 @@ rule Apply_VQSR:
         recal_snp = "../results/vqsr/snp.recal",
         tranches_snp = "../results/vqsr/snp.tranches"
     output:
-        apply_snp = temp("../results/vqsr/apply_vqsr_snp.vcf.gz"),
+        apply_snp = "../results/vqsr/apply_vqsr_snp.vcf.gz",
         apply_indel = "../results/vqsr/apply_vqsr_snp_indel.vcf.gz",
         select_pass = "../results/vcf/pass.vcf.gz"
     params:
