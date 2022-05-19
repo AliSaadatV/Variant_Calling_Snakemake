@@ -4,8 +4,8 @@ rule gatk_HaplotypeCaller:
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME']),
         dbsnp = expand("{dbsnp}", dbsnp = config['dbSNP'])
     output:
-        vcf = "../results/called/{sample}_raw_snps_indels_tmp.g.vcf",
-        index = "../results/called/{sample}_raw_snps_indels_tmp.g.vcf.idx"
+        vcf = "../results/called/{sample}_raw_snps_indels_tmp.g.vcf"
+    #    index = "../results/called/{sample}_raw_snps_indels_tmp.g.vcf.idx"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC']),
         tdir = config['TEMPDIR'],
