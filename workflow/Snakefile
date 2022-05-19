@@ -110,7 +110,7 @@ rule index:
     log:
         "logs/gatk_Idx/{sample}.log"
     conda:
-        "../envs/gatk4.yaml"
+        "envs/gatk4.yaml"
     message:
         "Index{input}"
     resources: cpus=1, mem_mb=4000, time_min=1440
