@@ -28,6 +28,6 @@ rule GenotypeGVCFs:
         -G StandardAnnotation -G AS_StandardAnnotation \
         -V gendb://{input.db} \
         {params.ped} \
-        -L {wildcards.CHROMS} \
+        -L chr{wildcards.CHROMS} \
         --tmp-dir {params.tdir} &> {log}
         """

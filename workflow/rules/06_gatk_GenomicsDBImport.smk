@@ -23,7 +23,7 @@ rule GenomicsDBImport:
         """
         gatk GenomicsDBImport --java-options {params.maxmemory} \
         --genomicsdb-workspace-path {output.db} \
-        --L {wildcards.CHROMS} \
+        -L chr{wildcards.CHROMS} \
         {params.gvcfs} \
         --reader-threads 1 \
         --batch-size 50 \
