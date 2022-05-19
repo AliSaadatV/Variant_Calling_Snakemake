@@ -7,7 +7,8 @@ rule GatherVCF:
     params:
         vcfs = " -I ".join("../results/vcf/" + s + ".vcf.gz" for s in CHROMS),
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
-        tdir = config['TEMPDIR']
+        tdir = config['TEMPDIR'],
+        partition = "serial"
     log:
         "logs/gatk_GatherVCF/GatherVCF.log"
     benchmark:
@@ -16,8 +17,7 @@ rule GatherVCF:
         "../envs/gatk4.yaml"
     message:
         "Gathering VCF for each chromosome"
-    threads: 2
-    resources: cpus=2, mem_mb=4000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
         gatk GatherVcfs \

@@ -7,7 +7,8 @@ rule hard_snp:
         snp_filtered = temp("../results/hard/snp_filtered.vcf.gz")
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
-        tdir = config['TEMPDIR']
+        tdir = config['TEMPDIR'],
+        partition = "serial"
     log:
         select = "logs/hard/hard_snp_select.log",
         filter = "logs/hard/hard_snp_filter.log"
@@ -50,7 +51,8 @@ rule hard_indel:
         indel_filtered = temp("../results/hard/indel_filtered.vcf.gz")
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
-        tdir = config['TEMPDIR']
+        tdir = config['TEMPDIR'],
+        partition = "serial"
     log:
         select = "logs/hard/hard_indel_select.log",
         filter = "logs/hard/hard_indel_filter.log"
@@ -60,8 +62,7 @@ rule hard_indel:
         "../envs/gatk4.yaml"
     message:
         "Running hard filter indel"
-    threads: 2
-    resources: cpus=2, mem_mb=4000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
         gatk SelectVariants \
@@ -94,7 +95,8 @@ rule merge_filtered:
         merged_pass = "../results/vcf/pass.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
-        tdir = config['TEMPDIR']
+        tdir = config['TEMPDIR'],
+        partition = "serial"
     log:
         merge = "logs/hard/merge.log",
         select = "logs/hard/select.log" 

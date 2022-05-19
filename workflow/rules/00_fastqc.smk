@@ -4,6 +4,8 @@ rule fastqc:
     output:
         html = ["../results/qc/fastqc/{sample}_R1_fastqc.html", "../results/qc/fastqc/{sample}_R2_fastqc.html"],
         zip = ["../results/qc/fastqc/{sample}_R1_fastqc.zip", "../results/qc/fastqc/{sample}_R2_fastqc.zip"]
+    params:
+        partition = "serial"
     log:
         "logs/fastqc/{sample}.log"
     benchmark:
@@ -12,7 +14,6 @@ rule fastqc:
         "../envs/fastqc.yaml"
     message:
         "Undertaking quality control checks on raw sequence data for {input}"
-    threads: 1
-    resources: tasks=1, cpus=2, mem_mb=2000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         "fastqc {input} -o ../results/qc/fastqc/ &> {log}"

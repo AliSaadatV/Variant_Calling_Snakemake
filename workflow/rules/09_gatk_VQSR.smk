@@ -111,7 +111,8 @@ rule Apply_VQSR:
         select_pass = "../results/vcf/pass.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
-        tdir = config['TEMPDIR']
+        tdir = config['TEMPDIR'],
+        partition = "serial"
     log:
         apply_vqsr_snp = "logs/VQSR/apply_VQSR_snp.log",
         apply_vqsr_indel = "logs/VQSR/apply_VQSR_indel.log",
@@ -122,8 +123,7 @@ rule Apply_VQSR:
         "../envs/gatk4.yaml"
     message:
         "Running apply VQSR"
-    threads: 2
-    resources: cpus=2, mem_mb=4000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
         gatk ApplyVQSR \

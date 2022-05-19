@@ -9,7 +9,8 @@ rule gatk_BaseRecalibrator:
         tdir = config['TEMPDIR'],
         padding = get_wes_padding_command,
         intervals = get_wes_intervals_command,
-        recalibration_resources = get_recal_resources_command
+        recalibration_resources = get_recal_resources_command,
+        partition = "serial"
     log:
         "logs/gatk_BaseRecalibrator/{sample}.log"
     benchmark:
@@ -18,8 +19,7 @@ rule gatk_BaseRecalibrator:
         "../envs/gatk4.yaml"
     message:
         "Generating a recalibration table for {input.bams}"
-    threads: 2
-    resources: tasks=1, cpus=2, mem_mb=4000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """gatk BaseRecalibrator \
         -I {input.bams} \

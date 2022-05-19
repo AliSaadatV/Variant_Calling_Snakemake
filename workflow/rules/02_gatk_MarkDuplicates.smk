@@ -6,7 +6,8 @@ rule gatk_MarkDuplicates:
         metrics = "../results/mapped/{sample}_mkdups_metrics.txt"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
-        tdir = config['TEMPDIR']
+        tdir = config['TEMPDIR'],
+        partition = "parallel"
     log:
         "logs/gatk_MarkDuplicates/{sample}.log"
     benchmark:
@@ -15,8 +16,7 @@ rule gatk_MarkDuplicates:
         "../envs/gatk4.yaml"
     message:
         "Locating and tagging duplicate reads in {input}"
-    threads: 1
-    resources: tasks=8, cpus=2, mem_mb=60000, time_min=1440
+    resources: cpus=28, mem_mb=60000, time_min=1440
     shell:
         """gatk MarkDuplicatesSpark \
         -I {input} \

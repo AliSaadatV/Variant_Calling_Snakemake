@@ -12,7 +12,8 @@ rule gatk_HaplotypeCaller:
         padding = get_wes_padding_command,
         intervals = get_wes_intervals_command,
         ped = get_pedigree_command,
-        other = "-ERC GVCF"
+        other = "-ERC GVCF",
+        partition = "serial"
     log:
         "logs/gatk_HaplotypeCaller/{sample}.log"
     benchmark:
@@ -21,8 +22,7 @@ rule gatk_HaplotypeCaller:
         "../envs/gatk4.yaml"
     message:
         "Calling germline SNPs and indels via local re-assembly of haplotypes for {input.bams}"
-    threads: 2
-    resources: cpus=2, mem_mb=20000, time_min=1440
+    resources: cpus=1, mem_mb=20000, time_min=1440
     shell:
         """gatk HaplotypeCaller \
         -I {input.bams} \

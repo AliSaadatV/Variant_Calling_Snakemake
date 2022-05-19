@@ -7,7 +7,8 @@ rule GenomicsDBImport:
     params:
         gvcfs=lambda wildcards, input: [f" -V {v}" for v in input["gvcfs_list"]],
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
-        tdir = config['TEMPDIR']
+        tdir = config['TEMPDIR'],
+        partition = "serial"
     log:
         "logs/gatk_genomicsDBImport/{CHROMS}.log"
     benchmark:
@@ -16,8 +17,7 @@ rule GenomicsDBImport:
         "../envs/gatk4.yaml"
     message:
         "Import into genomics db for {output.db}"
-    threads: 2
-    resources: cpus=2, mem_mb=4000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
         gatk GenomicsDBImport \

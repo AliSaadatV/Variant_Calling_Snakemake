@@ -7,7 +7,8 @@ rule GenotypeGVCFs:
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
         tdir = config['TEMPDIR'],  
-        ped = get_pedigree_command
+        ped = get_pedigree_command,
+        partition = "serial"
     log:
         "logs/gatk_GenotypeGVCFs/{CHROMS}.log"
     benchmark:
@@ -16,8 +17,7 @@ rule GenotypeGVCFs:
         "../envs/gatk4.yaml"
     message:
         "Performing joint genotyping on one or more samples pre-called with HaplotypeCaller for {input.db}"
-    threads: 2
-    resources: cpus=2, mem_mb=4000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
         gatk GenotypeGVCFs \
