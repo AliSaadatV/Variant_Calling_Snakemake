@@ -9,7 +9,7 @@ Adapted from https://github.com/ESR-NZ/human_genomics_pipeline
 ##### Set up wildcards #####
 
 # Define samples from fastq dir and chromosmes
-SAMPLES, = glob_wildcards("../data/fastq/{sample}_1.fastq.gz")
+SAMPLES, = glob_wildcards("../data/fastq/{sample}_R1.fastq.gz")
 CHROMS = [str(c) for c in range(1, 23)] + ["X", "Y", "M"]
 
 ##### Setup helper functions #####

@@ -2,8 +2,8 @@ rule fastqc:
     input:
         ["../data/fastq/{sample}_R1.fastq.gz", "../data/fastq/{sample}_R2.fastq.gz"]
     output:
-        html = ["../results/qc/fastqc/{sample}_R1_fastqc.html", "../results/qc/fastqc/{sample}_R2_fastqc.html"],
-        zip = ["../results/qc/fastqc/{sample}_R1_fastqc.zip", "../results/qc/fastqc/{sample}_R2_fastqc.zip"]
+        html = ["../results/qc/fastqc/{sample}_1_fastqc.html", "../results/qc/fastqc/{sample}_2_fastqc.html"],
+        zip = ["../results/qc/fastqc/{sample}_1_fastqc.zip", "../results/qc/fastqc/{sample}_2_fastqc.zip"]
     log:
         "logs/fastqc/{sample}.log"
     benchmark:
