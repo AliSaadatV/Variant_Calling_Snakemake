@@ -22,7 +22,7 @@ rule bwa_mem:
     threads: 16
     resources: cpus=16, mem_mb=40000, time_min=1440
     shell:
-        "fastp -i {input.R1} -I {input.R2} --stdout --thread 2 -j {log.fastp_json} -h {log.fastp_html} 2> {log.fastp_log} |"
-        "bwa mem -v 2 -M -t 10 -p -R {params.readgroup} {input.refgenome} - 2> {log.bwa} |"
+        "fastp -i {input.R1} -I {input.R2} --stdout --thread 2 -j {log.fastp_json} -h {log.fastp_html} 2> {log.fastp_log} | "
+        "bwa mem -v 2 -M -t 10 -p -R {params.readgroup} {input.refgenome} - 2> {log.bwa} | "
         "samtools view -@ 4 -O BAM -o {output} 2> {log.samtools}"
     
