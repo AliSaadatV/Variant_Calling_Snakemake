@@ -13,6 +13,6 @@ rule fastqc:
     message:
         "Undertaking quality control checks on raw sequence data for {input}"
     threads: 1
-    resources: cpus=1, mem_mb=2000, time_min=1440
+    resources: tasks=1, cpus=2, mem_mb=2000, time_min=1440
     shell:
         "fastqc {input} -o ../results/qc/fastqc/ &> {log}"
