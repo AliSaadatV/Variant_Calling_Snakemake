@@ -18,6 +18,7 @@ rule gatk_BaseRecalibrator:
         "../envs/gatk4.yaml"
     message:
         "Generating a recalibration table for {input.bams}"
+    threads: 2
     resources: cpus=2, mem_mb=4000, time_min=1440
     shell:
         """gatk BaseRecalibrator \
