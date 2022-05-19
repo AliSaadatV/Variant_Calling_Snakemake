@@ -109,6 +109,8 @@ rule index:
         "../results/called/{sample}_raw_snps_indels_tmp.g.vcf.idx"
     log:
         "logs/gatk_Idx/{sample}.log"
+    params:
+        partition = "serial"
     conda:
         "envs/gatk4.yaml"
     message:
