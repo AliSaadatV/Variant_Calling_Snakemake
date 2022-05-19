@@ -15,6 +15,7 @@ rule gatk_MarkDuplicates:
         "../envs/gatk4.yaml"
     message:
         "Locating and tagging duplicate reads in {input}"
+    threads: 16
     resources: cpus=16, mem_mb=60000, time_min=1440
     shell:
         """gatk MarkDuplicatesSpark \

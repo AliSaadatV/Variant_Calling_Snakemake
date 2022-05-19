@@ -19,6 +19,7 @@ rule bwa_mem:
         "../envs/bwa.yaml"
     message:
         "Mapping sequences against a reference human genome with BWA-MEM for {wildcards.sample}"
+    threads: 16
     resources: cpus=16, mem_mb=40000, time_min=1440
     shell:
         "fastp -i {input.R1} -I {input.R2} --stdout --thread 2 -j {log.fastp_json} -h {log.fastp_html} 2> {log.fastp_log} |"

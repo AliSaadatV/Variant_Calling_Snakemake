@@ -22,7 +22,8 @@ rule VQSR_snp:
         "../envs/gatk4.yaml"
     message:
         "Running VQSR snp"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+    threads: 2
+    resources: cpus=2, mem_mb=4000, time_min=1440
     shell:
         """
         gatk VariantRecalibrator\
@@ -70,7 +71,8 @@ rule VQSR_indel:
         "../envs/gatk4.yaml"
     message:
         "Running VQSR indel"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+    threads: 2
+    resources: cpus=2, mem_mb=4000, time_min=1440
     shell:
         """
         gatk VariantRecalibrator \
@@ -120,7 +122,8 @@ rule Apply_VQSR:
         "../envs/gatk4.yaml"
     message:
         "Running apply VQSR"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+    threads: 2
+    resources: cpus=2, mem_mb=4000, time_min=1440
     shell:
         """
         gatk ApplyVQSR \

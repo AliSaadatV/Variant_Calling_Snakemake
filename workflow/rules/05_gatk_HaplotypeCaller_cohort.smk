@@ -21,7 +21,8 @@ rule gatk_HaplotypeCaller:
         "../envs/gatk4.yaml"
     message:
         "Calling germline SNPs and indels via local re-assembly of haplotypes for {input.bams}"
-    resources: cpus=1, mem_mb=20000, time_min=1440
+    threads: 2
+    resources: cpus=2, mem_mb=20000, time_min=1440
     shell:
         """gatk HaplotypeCaller \
         -I {input.bams} \

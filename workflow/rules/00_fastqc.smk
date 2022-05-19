@@ -13,6 +13,7 @@ rule fastqc:
         "../envs/fastqc.yaml"
     message:
         "Undertaking quality control checks on raw sequence data for {input}"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+    threads: 1
+    resources: cpus=1, mem_mb=2000, time_min=1440
     shell:
         "fastqc {input} -o ../results/qc/fastqc/ &> {log}"

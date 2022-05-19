@@ -16,7 +16,8 @@ rule denovo:
         "../envs/gatk4.yaml"
     message:
         "Possible denovo"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+    threads: 2
+    resources: cpus=2, mem_mb=4000, time_min=1440
     shell:
         """
         gatk VariantAnnotator \
