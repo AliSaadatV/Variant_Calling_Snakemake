@@ -85,12 +85,12 @@ report: "report/workflow.rst"
 if config['PED'] == "":
     rule all:
         input:
-            expand("../results/qc/fastqc/{sample}_{read}_fastqc.html", sample = SAMPLES, read = [1, 2]),
+            expand("../results/qc/fastqc/{sample}_R{read}_fastqc.html", sample = SAMPLES, read = [1, 2]),
             "../results/vcf/refined_GQ.vcf.gz"
 if config['PED'] != "":
     rule all:
         input:
-            expand("../results/qc/fastqc/{sample}_{read}_fastqc.html", sample = SAMPLES, read = [1, 2]),
+            expand("../results/qc/fastqc/{sample}_R{read}_fastqc.html", sample = SAMPLES, read = [1, 2]),
             "../results/vcf/refined_GQ_denovo.vcf.gz"
 
 ##### Load rules #####
