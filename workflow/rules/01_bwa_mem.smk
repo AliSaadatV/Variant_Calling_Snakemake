@@ -1,7 +1,7 @@
 rule bwa_mem:
     input:
-        R1 = "../data/fastq/{sample}_1.fastq.gz",
-        R2 = "../data/fastq/{sample}_2.fastq.gz",
+        R1 = "../data/fastq/{sample}_R1.fastq.gz",
+        R2 = "../data/fastq/{sample}_R2.fastq.gz",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output: 
         "../results/mapped/{sample}.bam"
