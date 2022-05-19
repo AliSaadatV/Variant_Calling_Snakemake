@@ -6,7 +6,7 @@ rule hard_snp:
         snp_raw = temp("../results/hard/snp_raw.vcf.gz"),
         snp_filtered = temp("../results/hard/snp_filtered.vcf.gz")
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         partition = "serial"
     log:
@@ -21,14 +21,14 @@ rule hard_snp:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk SelectVariants \
+        gatk SelectVariants --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {input.raw_vcf} \
         -select-type SNP \
         -O {output.snp_raw} \
         --temp-dir {params.tdir} &> {log.select}
 
-        gatk VariantFiltration \
+        gatk VariantFiltration --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {output.snp_raw} \
         --filter-expression "QD < 2.0" --filter-name "QD_lt_2" \
@@ -50,7 +50,7 @@ rule hard_indel:
         indel_raw = temp("../results/hard/indel_raw.vcf.gz"),
         indel_filtered = temp("../results/hard/indel_filtered.vcf.gz")
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         partition = "serial"
     log:
@@ -65,7 +65,7 @@ rule hard_indel:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk SelectVariants \
+        gatk SelectVariants --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {input.raw_vcf} \
         -select-type INDEL \
@@ -73,7 +73,7 @@ rule hard_indel:
         -O {output.indel_raw} \
         --temp-dir {params.tdir} &> {log.select}
 
-        gatk VariantFiltration \
+        gatk VariantFiltration --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {output.indel_raw} \
         --filter-expression "QD < 2.0" --filter-name "QD_lt_2" \
@@ -94,7 +94,7 @@ rule merge_filtered:
         merged_total = "../results/hard/merged.vcf.gz",
         merged_pass = "../results/vcf/pass.vcf.gz"
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         partition = "serial"
     log:
@@ -109,13 +109,13 @@ rule merge_filtered:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk MergeVcfs \
+        gatk MergeVcfs --java-options {params.maxmemory} \
         -I {input.snp_filtered} \
         -I {input.indel_filtered} \
         -O {output.merged_total} \
         --temp-dir {params.tdir} &> {log.merge}
 
-        gatk SelectVariants \
+        gatk SelectVariants --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {output.merged_total} \
         -O {output.merged_pass} \

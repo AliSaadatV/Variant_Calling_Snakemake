@@ -6,7 +6,7 @@ rule GatherVCF:
         index = "../results/vcf/all_raw.vcf.gz.tbi"
     params:
         vcfs = " -I ".join("../results/vcf/" + s + ".vcf.gz" for s in CHROMS),
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         partition = "serial"
     log:
@@ -20,7 +20,7 @@ rule GatherVCF:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk GatherVcfs \
+        gatk GatherVcfs --java-options {params.maxmemory} \
         -I {params.vcfs} \
         -O {output.file} \
         --tmp-dir {params.tdir} &> {log}

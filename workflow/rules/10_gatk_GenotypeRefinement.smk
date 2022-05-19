@@ -7,7 +7,7 @@ rule refinement:
         refined = temp("../results/vcf/refined.vcf.gz"),
         refined_GQ = "../results/vcf/refined_GQ.vcf.gz"
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         ped = get_pedigree_command
     log:
@@ -22,7 +22,7 @@ rule refinement:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk CalculateGenotypePosteriors \
+        gatk CalculateGenotypePosteriors --java-options {params.maxmemory} \
         -V {input.filtered_vcf} \
         -O  {output.refined} \
         --supporting-callsets {input.gnomad} \
@@ -30,7 +30,7 @@ rule refinement:
         {params.ped} \
         --temp-dir {params.tdir} &> {log.posterior}
 
-        gatk VariantFiltration \
+        gatk VariantFiltration --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {output.refined} \
         --genotype-filter-expression "GQ < 20" --genotype-filter-name "lowGQ" \

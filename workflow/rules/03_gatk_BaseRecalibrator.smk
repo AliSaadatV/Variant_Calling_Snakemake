@@ -5,7 +5,7 @@ rule gatk_BaseRecalibrator:
     output:
         report("../results/bqsr/{sample}_recalibration_report.grp", caption = "../report/recalibration.rst", category = "Base recalibration")
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         padding = get_wes_padding_command,
         intervals = get_wes_intervals_command,
@@ -21,7 +21,7 @@ rule gatk_BaseRecalibrator:
         "Generating a recalibration table for {input.bams}"
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
-        """gatk BaseRecalibrator \
+        """gatk BaseRecalibrator --java-options {params.maxmemory} \
         -I {input.bams} \
         -R {input.refgenome} \
         -O {output} \

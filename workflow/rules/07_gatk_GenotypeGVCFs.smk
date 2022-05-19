@@ -5,7 +5,7 @@ rule GenotypeGVCFs:
     output:
         "../results/genotypes/{CHROMS}.vcf.gz"
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],  
         ped = get_pedigree_command,
         partition = "serial"
@@ -20,7 +20,7 @@ rule GenotypeGVCFs:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk GenotypeGVCFs \
+        gatk GenotypeGVCFs --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -O {output} \
         --only-output-calls-starting-in-intervals \

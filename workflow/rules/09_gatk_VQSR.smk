@@ -6,7 +6,7 @@ rule VQSR_snp:
         recal_snp = temp("../results/vqsr/snp.recal"),
         tranches_snp = temp("../results/vqsr/snp.tranches")
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         hapmap = config['HAPMAP'],
         omni = config['OMNI'],
@@ -22,11 +22,10 @@ rule VQSR_snp:
         "../envs/gatk4.yaml"
     message:
         "Running VQSR snp"
-    threads: 2
-    resources: cpus=2, mem_mb=4000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk VariantRecalibrator\
+        gatk VariantRecalibrator --java-options {params.maxmemory} \
         -tranche 100.0 -tranche 99.95 -tranche 99.9 \
 	    -tranche 99.5 -tranche 99.0 -tranche 97.0 -tranche 96.0 \
 	    -tranche 95.0 -tranche 94.0 \
@@ -58,7 +57,7 @@ rule VQSR_indel:
         recal_indel = temp("../results/vqsr/indel.recal"),
         tranches_indel = temp("../results/vqsr/indel.tranches")
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         mills = config['MILLS'],
         dbsnp = config['dbSNP'],
@@ -71,11 +70,10 @@ rule VQSR_indel:
         "../envs/gatk4.yaml"
     message:
         "Running VQSR indel"
-    threads: 2
-    resources: cpus=2, mem_mb=4000, time_min=1440
+    resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk VariantRecalibrator \
+        gatk VariantRecalibrator --java-options {params.maxmemory} \
         -tranche 100.0 -tranche 99.95 -tranche 99.9 \
         -tranche 99.5 -tranche 99.0 -tranche 97.0 -tranche 96.0 \
         -tranche 95.0 -tranche 94.0 \
@@ -110,7 +108,7 @@ rule Apply_VQSR:
         apply_indel = "../results/vqsr/apply_vqsr_snp_indel.vcf.gz",
         select_pass = "../results/vcf/pass.vcf.gz"
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         partition = "serial"
     log:
@@ -126,7 +124,7 @@ rule Apply_VQSR:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk ApplyVQSR \
+        gatk ApplyVQSR --java-options {params.maxmemory} \
         -V {input.raw_vcf} \
         --recal-file {input.recal_snp} \
         -mode SNP \
@@ -136,7 +134,7 @@ rule Apply_VQSR:
         --temp-dir {params.tdir} \
         -O {output.apply_snp} &> {log.apply_vqsr_snp}
 
-        gatk ApplyVQSR \
+        gatk ApplyVQSR --java-options {params.maxmemory} \
         -V {output.apply_snp} \
         --recal-file {input.recal_indel} \
         -mode INDEL \
@@ -146,7 +144,7 @@ rule Apply_VQSR:
         --temp-dir {params.tdir} \
         -O {output.apply_indel}  &> {log.apply_vqsr_indel}
 
-        gatk SelectVariants \
+        gatk SelectVariants --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {output.apply_indel} \
         -O {output.select_pass} \

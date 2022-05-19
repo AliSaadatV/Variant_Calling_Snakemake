@@ -4,12 +4,12 @@
 
 # Specify the path to .ped file if you want to use it. Otherwise leave it empty.
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531972-PED-Pedigree-format
-PED: ""
+PED: "/scratch/saadat/varicella/Variant_Calling_Snakemake/data/pedigrees/pedigree.ped"
 
 # Choose between ('VQSR' and 'HARD')
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531112?id=2806
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360037499012
-FILTER: ""
+FILTER: "HARD"
 
 # File path to the reference genome (.fasta)
 REFGENOME: "/work/gr-fe/saadat/Reference_Genome/GRCH38_no_alt/GCA_000001405.15_GRCh38_no_alt_analysis_set.fa.gz"
@@ -56,25 +56,11 @@ WES:
 ##### Pipeline resources #####
 ##############################
 
-# Number of threads to use per rule/sample for multithreaded rules, multithreading will significantly speed up these rules (diminishing speed gains beyond 8 threads)
-THREADS: 8
-
 # Maximum memory usage per rule/sample (eg. '40g' for 40 gigabytes, this should suffice for exomes)
-MAXMEMORY: "40g"
-
-# Maximum number of GPU's to be used per rule/sample for gpu-accelerated runs (eg `1` for 1 GPU)
-GPU: 0
-
-##############################
-########## Trimming ##########
-##############################
-
-# Whether or not to trim the raw fastq reads (either 'Yes' or 'No')
-TRIM: ""
-
-# If trimming, choose the adapter sequence to be trimmed (eg. `--illumina`, `--nextera` or `--small_rna`) or pass adapter sequences to the `-a` and `-a2` flags
-TRIMMING:
-  ADAPTERS: ""
+MAXMEMORY: 
+  MARK_DUP: "50g"
+  HC: "20g" #HaplotypeCaller
+  OTHER: "4g"
 
 ##############################
 ##### Base recalibration #####

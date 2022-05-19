@@ -5,7 +5,7 @@ rule denovo:
     output:
         "../results/vcf/refined_GQ_denovo.vcf.gz"
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         ped = get_pedigree_command
     log:
@@ -19,7 +19,7 @@ rule denovo:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk VariantAnnotator \
+        gatk VariantAnnotator --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {input.refined_GQ_vcf} \
         -O  {output} \

@@ -7,7 +7,7 @@ rule gatk_HaplotypeCaller:
         vcf = temp("../results/called/{sample}_raw_snps_indels_tmp.g.vcf"),
         index = temp("../results/called/{sample}_raw_snps_indels_tmp.g.vcf.idx")
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC']),
         tdir = config['TEMPDIR'],
         padding = get_wes_padding_command,
         intervals = get_wes_intervals_command,
@@ -24,7 +24,7 @@ rule gatk_HaplotypeCaller:
         "Calling germline SNPs and indels via local re-assembly of haplotypes for {input.bams}"
     resources: cpus=1, mem_mb=20000, time_min=1440
     shell:
-        """gatk HaplotypeCaller \
+        """gatk HaplotypeCaller --java-options {params.maxmemory} \
         -I {input.bams} \
         -R {input.refgenome} \
         -D {input.dbsnp} \

@@ -6,7 +6,7 @@ rule GenomicsDBImport:
         db = directory("../results/genomicsDB/{CHROMS}.db")
     params:
         gvcfs=lambda wildcards, input: [f" -V {v}" for v in input["gvcfs_list"]],
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         partition = "serial"
     log:
@@ -20,7 +20,7 @@ rule GenomicsDBImport:
     resources: cpus=1, mem_mb=4000, time_min=1440
     shell:
         """
-        gatk GenomicsDBImport \
+        gatk GenomicsDBImport --java-options {params.maxmemory} \
         --genomicsdb-workspace-path {output.db} \
         --L {wildcards.CHROMS} \
         {params.gvcfs} \
