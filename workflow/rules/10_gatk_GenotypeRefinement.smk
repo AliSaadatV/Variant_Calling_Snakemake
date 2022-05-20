@@ -5,7 +5,7 @@ rule refinement:
         gnomad = expand("{gnomad}", gnomad = config['GNOMAD'])
     output:
         refined = "../results/vcf/refined.vcf.gz",
-        refined_GQ = "../results/vcf/refined_GQ.vcf.gz"
+        refined_GQ = protected("../results/vcf/refined_GQ.vcf.gz")
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],

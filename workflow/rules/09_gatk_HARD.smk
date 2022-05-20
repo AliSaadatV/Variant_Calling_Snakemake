@@ -3,8 +3,8 @@ rule hard_snp:
         raw_vcf = "../results/vcf/all_raw.vcf.gz",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
-        snp_raw = temp("../results/hard/snp_raw.vcf.gz"),
-        snp_filtered = temp("../results/hard/snp_filtered.vcf.gz")
+        snp_raw = "../results/hard/snp_raw.vcf.gz",
+        snp_filtered = "../results/hard/snp_filtered.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
@@ -47,8 +47,8 @@ rule hard_indel:
         raw_vcf = "../results/vcf/all_raw.vcf.gz",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
-        indel_raw = temp("../results/hard/indel_raw.vcf.gz"),
-        indel_filtered = temp("../results/hard/indel_filtered.vcf.gz")
+        indel_raw = "../results/hard/indel_raw.vcf.gz",
+        indel_filtered = "../results/hard/indel_filtered.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
@@ -71,7 +71,7 @@ rule hard_indel:
         -select-type INDEL \
         -select-type MIXED \
         -O {output.indel_raw} \
-        --temp-dir {params.tdir} &> {log.select}
+        --tmp-dir {params.tdir} &> {log.select}
 
         gatk VariantFiltration --java-options {params.maxmemory} \
         -R {input.refgenome} \
@@ -82,7 +82,7 @@ rule hard_indel:
         --filter-expression "SOR > 10.0" --filter-name "SOR_gt_10" \
         --filter-expression "QUAL < 30.0" --filter-name "QUAL30" \
         -O {output.indel_filtered} \
-        --temp-dir {params.tdir} &> {log.filter}
+        --tmp-dir {params.tdir} &> {log.filter}
         """
 
 rule merge_filtered:
