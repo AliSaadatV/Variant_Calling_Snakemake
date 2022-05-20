@@ -5,7 +5,7 @@ rule GatherVCF:
         file = "../results/vcf/all_raw.vcf.gz",
         index = "../results/vcf/all_raw.vcf.gz.tbi"
     params:
-        vcfs = " -I ".join("../results/vcf/" + s + ".vcf.gz" for s in CHROMS),
+        vcfs = " -I ".join("../results/genotypes/" + s + ".vcf.gz" for s in CHROMS),
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         partition = "serial"

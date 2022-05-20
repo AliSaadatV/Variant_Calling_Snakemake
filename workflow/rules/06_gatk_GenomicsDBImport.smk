@@ -4,7 +4,8 @@ rule GenomicsDBImport:
         gvcfs_index = expand("../results/called/{sample}_raw_snps_indels_tmp.g.vcf.idx", sample = SAMPLES),
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
-        db = directory("../results/genomicsDB/{CHROMS}.db")
+        db = directory("../results/genomicsDB/{CHROMS}db"),
+        tar = "analysis/genomicsDB/{CHROMS}db.tar"
     params:
         gvcfs=lambda wildcards, input: [f" -V {v}" for v in input["gvcfs_list"]],
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
@@ -29,4 +30,6 @@ rule GenomicsDBImport:
         --batch-size 50 \
         --genomicsdb-shared-posixfs-optimizations true \
         --tmp-dir {params.tdir} &> {log}
+
+        tar -cf {output.tar} {output.db}
         """
