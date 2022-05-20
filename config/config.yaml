@@ -58,7 +58,7 @@ WES:
 
 # Maximum memory usage per rule/sample (eg. '40g' for 40 gigabytes, this should suffice for exomes)
 MAXMEMORY: 
-  MARK_DUP: "50g"
+  MARK_DUP: "40g"
   HC: "20g" #HaplotypeCaller
   OTHER: "4g"
 
