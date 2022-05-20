@@ -45,7 +45,7 @@ rule VQSR_snp:
         -an QD -an MQ -an MQRankSum -an ReadPosRankSum -an FS -an SOR {params.DP} {params.InbreedingCoeff} \
         -mode SNP \
         -O {output.recal_snp} \
-        --tranches-file {output.trancesh_snp} \
+        --tranches-file {output.tranches_snp} \
         --tmp-dir {params.tdir} &> {log}
         """
 

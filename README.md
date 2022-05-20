@@ -18,6 +18,11 @@ resources: [cpus=50, mem_mb=500000]
 
 4. Open a [screen](https://linux.die.net/man/1/screen) or [tmux](https://man7.org/linux/man-pages/man1/tmux.1.html) on the cluster side (in case of a problem with connection, the program will run in the background), then run  `snakemake --profile slurm --use-conda --conda-frontend mamba --latency-wait 120 --configfile ../config/config.yaml`
 
+Notes:
+* It's a good idead to copy the data and snakemake workflow into a large temporary folder (like /scratch) and run the analysis. After finishing the workflow, we can copy important results (like recalibrated BAM or refined VCF) into a directory which gets backed up.
+
+* Pay attention to the partition. For Scitas (Fidis) at EPFL, partition "serial" is used for most of the workflow because we use only one cpu. Some tools support multithreading, for them we use "parallel" partition.
+
 Used tools are:
 * fastqc
 * fastp
