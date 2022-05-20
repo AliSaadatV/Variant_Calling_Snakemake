@@ -2,7 +2,8 @@ rule GatherVCF:
     input:
         expand("../results/genotypes/{chrom}.vcf.gz",chrom = CHROMS)
     output:
-        file = "../results/vcf/all_raw.vcf.gz"
+        file = "../results/vcf/all_raw.vcf.gz",
+        index = "../results/vcf/all_raw.vcf.gz.tbi"
     params:
         vcfs = " -I ".join("../results/genotypes/" + s + ".vcf.gz" for s in CHROMS),
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
@@ -23,4 +24,8 @@ rule GatherVCF:
         -I {params.vcfs} \
         -O {output.file} \
         --TMP_DIR {params.tdir} &> {log}
+
+        gatk IndexFeatureFile --java-options {params.maxmemory} \
+        -I {output.file} \
+        -O {output.index}
         """
