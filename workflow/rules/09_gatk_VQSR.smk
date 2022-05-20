@@ -99,7 +99,7 @@ rule Apply_VQSR:
     input:
         raw_vcf = "../results/vcf/all_raw.vcf.gz",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME']),
-        recal_indel = "../results/vqsr/ndel.recal",
+        recal_indel = "../results/vqsr/indel.recal",
         tranches_indel = "../results/vqsr/indel.tranches",
         recal_snp = "../results/vqsr/snp.recal",
         tranches_snp = "../results/vqsr/snp.tranches"
