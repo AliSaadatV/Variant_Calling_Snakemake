@@ -23,5 +23,5 @@ rule GatherVCF:
         gatk GatherVcfs --java-options {params.maxmemory} \
         -I {params.vcfs} \
         -O {output.file} \
-        --tmp-dir {params.tdir} &> {log}
+        --TMP_DIR {params.tdir} &> {log}
         """

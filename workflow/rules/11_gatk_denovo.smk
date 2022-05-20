@@ -24,5 +24,5 @@ rule denovo:
         -V {input.refined_GQ_vcf} \
         -O  {output} \
         {params.ped} \
-        --temp-dir {params.tdir} &> {log}
+        --tmp-dir {params.tdir} &> {log}
         """

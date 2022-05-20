@@ -26,7 +26,7 @@ rule hard_snp:
         -V {input.raw_vcf} \
         -select-type SNP \
         -O {output.snp_raw} \
-        --temp-dir {params.tdir} &> {log.select}
+        --tmp-dir {params.tdir} &> {log.select}
 
         gatk VariantFiltration --java-options {params.maxmemory} \
         -R {input.refgenome} \
@@ -39,7 +39,7 @@ rule hard_snp:
         --filter-expression "SOR > 3.0" --filter-name "SOR_gt_3" \
         --filter-expression "QUAL < 30.0" --filter-name "QUAL30" \
         -O {output.snp_filtered} \
-        --temp-dir {params.tdir} &> {log.filter}
+        --tmp-dir {params.tdir} &> {log.filter}
         """
 
 rule hard_indel:
@@ -113,12 +113,12 @@ rule merge_filtered:
         -I {input.snp_filtered} \
         -I {input.indel_filtered} \
         -O {output.merged_total} \
-        --temp-dir {params.tdir} &> {log.merge}
+        --tmp-dir {params.tdir} &> {log.merge}
 
         gatk SelectVariants --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {output.merged_total} \
         -O {output.merged_pass} \
         --exclude-filtered \
-        --temp-dir {params.tdir} &> {log.select}
+        --tmp-dir {params.tdir} &> {log.select}
         """

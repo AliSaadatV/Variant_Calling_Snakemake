@@ -28,12 +28,12 @@ rule refinement:
         --supporting-callsets {input.gnomad} \
         --num-reference-samples-if-no-call 20314 \
         {params.ped} \
-        --temp-dir {params.tdir} &> {log.posterior}
+        --tmp-dir {params.tdir} &> {log.posterior}
 
         gatk VariantFiltration --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {output.refined} \
         --genotype-filter-expression "GQ < 20" --genotype-filter-name "lowGQ" \
         -O {output.refined_GQ} \
-        --temp-dir {params.tdir} &> {log.GQ}
+        --tmp-dir {params.tdir} &> {log.GQ}
         """

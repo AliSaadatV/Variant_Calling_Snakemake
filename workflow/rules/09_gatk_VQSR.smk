@@ -46,7 +46,7 @@ rule VQSR_snp:
         -mode SNP \
         -O {output.recal_snp} \
         --tranches-file {output.trancesh_snp} \
-        --temp-dir {params.tdir} &> {log}
+        --tmp-dir {params.tdir} &> {log}
         """
 
 rule VQSR_indel:
@@ -92,7 +92,7 @@ rule VQSR_indel:
         -mode INDEL \
         -O {output.recal_indel} \
         --tranches-file {output.tranches_indel} \
-        --temp-dir {params.tdir} &> {log}
+        --tmp-dir {params.tdir} &> {log}
         """
 
 rule Apply_VQSR:
@@ -131,7 +131,7 @@ rule Apply_VQSR:
         --tranches-file {input.tranches_snp} \
         --truth-sensitivity-filter-level 99.7 \
         --create-output-variant-index true \
-        --temp-dir {params.tdir} \
+        --tmp-dir {params.tdir} \
         -O {output.apply_snp} &> {log.apply_vqsr_snp}
 
         gatk ApplyVQSR --java-options {params.maxmemory} \
@@ -141,7 +141,7 @@ rule Apply_VQSR:
         --tranches-file {input.tranches_indel} \
         --truth-sensitivity-filter-level 95 \
         --create-output-variant-index true \
-        --temp-dir {params.tdir} \
+        --tmp-dir {params.tdir} \
         -O {output.apply_indel}  &> {log.apply_vqsr_indel}
 
         gatk SelectVariants --java-options {params.maxmemory} \
@@ -151,5 +151,5 @@ rule Apply_VQSR:
         --exclude-filtered \
         --exclude-non-variants \
         --remove-unused-alternates \
-        --temp-dir {params.tdir} &> {log.apply_vqsr_select}
+        --tmp-dir {params.tdir} &> {log.apply_vqsr_select}
         """
