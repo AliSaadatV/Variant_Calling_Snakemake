@@ -4,7 +4,7 @@ rule gatk_HaplotypeCaller:
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME']),
         dbsnp = expand("{dbsnp}", dbsnp = config['dbSNP'])
     output:
-        vcf = "../results/called/{sample}.g.vcf"
+        vcf = "../results/called/{sample}.g.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC']),
         tdir = config['TEMPDIR'],

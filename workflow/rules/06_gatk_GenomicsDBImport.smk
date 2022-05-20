@@ -1,6 +1,6 @@
 rule GenomicsDBImport:
     input:
-        gvcfs_list = expand("../results/called/{sample}.g.vcf", sample = SAMPLES), 
+        gvcfs_list = expand("../results/called/{sample}.g.vcf.gz", sample = SAMPLES), 
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
         db = directory("../results/genomicsDB/{CHROMS}db"),
