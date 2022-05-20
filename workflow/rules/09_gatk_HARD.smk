@@ -113,7 +113,7 @@ rule merge_filtered:
         -I {input.snp_filtered} \
         -I {input.indel_filtered} \
         -O {output.merged_total} \
-        --tmp-dir {params.tdir} &> {log.merge}
+        --TMP_DIR {params.tdir} &> {log.merge}
 
         gatk SelectVariants --java-options {params.maxmemory} \
         -R {input.refgenome} \
