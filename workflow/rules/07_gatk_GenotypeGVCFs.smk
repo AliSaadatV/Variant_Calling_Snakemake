@@ -1,6 +1,6 @@
 rule GenotypeGVCFs:
     input:
-        db = "../results/genomicsDB/{CHROMS}.db",
+        db = "../results/genomicsDB/{CHROMS}db",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
         "../results/genotypes/{CHROMS}.vcf.gz"
