@@ -7,7 +7,7 @@ This repository contains the workflow to call variants from next-generation sequ
 
 ```
 jobs: 32
-cluster: "sbatch -t {resources.time_min} --mem={resources.mem_mb} -c {resources.cpus} -o logs_slurm/{rule}_{wildcards} -e logs_slurm/{rule}_{wildcards} --mail-type=FAIL --mail-user=your.email@email.com"
+cluster: "sbatch -t {resources.time_min} --mem={resources.mem_mb} -c {resources.cpus} -o logs/{rule}_{wildcards} -e logs/{rule}_{wildcards} --mail-type=FAIL --mail-user=your.email@email.com"
 default-resources: [cpus=2, mem_mb=4000, time_min=1440]
 resources: [cpus=50, mem_mb=500000]
 ```
