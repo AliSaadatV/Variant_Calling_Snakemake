@@ -3,20 +3,20 @@ This repository contains the workflow to call variants from next-generation sequ
 
 Note: reads must have names like ID_R1.fastq.gz and ID_R2.fastq.gz (not ID_1.fastq.gz and ID_2.fastq.gz) 
 
-TO run on a cluster, check out https://www.sichong.site/workflow/2021/11/08/how-to-manage-workflow-with-resource-constraint.html. In summary, create the file *~/.config/snakemake/slurm/config.yaml* and write the following lines in it:
+TO run on a cluster, check out [this blog](https://www.sichong.site/workflow/2021/11/08/how-to-manage-workflow-with-resource-constraint.html). In summary, create the file *~/.config/snakemake/slurm/config.yaml* and write the following lines in it:
 
-* jobs: 32
-* cluster: "sbatch -t {resources.time_min} --mem={resources.mem_mb} -c {resources.cpus} -o logs_slurm/{rule}_{wildcards} -e logs_slurm/{rule}_{wildcards} --mail-type=FAIL --mail-user=your.email@email.com"
-* default-resources: [cpus=2, mem_mb=4000, time_min=1440]
-* resources: [cpus=50, mem_mb=500000]
+```
+jobs: 32
+cluster: "sbatch -t {resources.time_min} --mem={resources.mem_mb} -c {resources.cpus} -o logs_slurm/{rule}_{wildcards} -e logs_slurm/{rule}_{wildcards} --mail-type=FAIL --mail-user=your.email@email.com"
+default-resources: [cpus=2, mem_mb=4000, time_min=1440]
+resources: [cpus=50, mem_mb=500000]
+```
 
+Edit *config.yaml* inside the config folder (this one is different from cluster profile config which was made in previous step).
 
+First open a [screen](https://linux.die.net/man/1/screen) or [tmux](https://man7.org/linux/man-pages/man1/tmux.1.html) on the cluster side (in case of a problem with connection, the program will run in the background), then run  `snakemake --profile slurm --use-conda --conda-frontend mamba --latency-wait 120 --configfile ../config/config.yaml`
 
-First open a *screen* on the server side, then run  **snakemake --profile slurm --use-conda --conda-frontend mamba --latency-wait 120 --configfile ../config/config.yaml**
-
-Do not forget to edit *config.yaml* file.
-
-Required tools are:
+Used tools are:
 * fastqc
 * fastp
 * BWA

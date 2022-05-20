@@ -9,8 +9,7 @@ rule GenomicsDBImport:
     params:
         gvcfs=lambda wildcards, input: [f" -V {v}" for v in input["gvcfs_list"]],
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
-        tdir = config['TEMPDIR'],
-        partition = "serial"
+        tdir = config['TEMPDIR']
     log:
         "logs/gatk_genomicsDBImport/{CHROMS}.log"
     benchmark:
@@ -18,8 +17,8 @@ rule GenomicsDBImport:
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Import into genomics db for {output.db}"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "gatk_genomicsDBImport for {output.db}"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk GenomicsDBImport --java-options {params.maxmemory} \

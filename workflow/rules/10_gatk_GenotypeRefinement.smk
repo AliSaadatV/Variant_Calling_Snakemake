@@ -9,18 +9,17 @@ rule refinement:
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
-        ped = get_pedigree_command,
-        partition = "serial"
+        ped = get_pedigree_command
     log:
-        posterior = "logs/refinement/posterior.log",
-        GQ = "logs/refinement/GQ.log"
+        posterior = "logs/gatk_GenotypeRefinement/posterior.log",
+        GQ = "logs/gatk_GenotypeRefinement/GQ.log"
     benchmark:
-        "benchmarks/refinement/refinement.tsv"
+        "benchmarks/gatk_GenotypeRefinement/refinement.tsv"
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Genotype Refinement"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "gatk_GenotypeRefinement"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk CalculateGenotypePosteriors --java-options {params.maxmemory} \

@@ -9,8 +9,7 @@ rule gatk_BaseRecalibrator:
         tdir = config['TEMPDIR'],
         padding = get_wes_padding_command,
         intervals = get_wes_intervals_command,
-        recalibration_resources = get_recal_resources_command,
-        partition = "serial"
+        recalibration_resources = get_recal_resources_command
     log:
         "logs/gatk_BaseRecalibrator/{sample}.log"
     benchmark:
@@ -18,8 +17,8 @@ rule gatk_BaseRecalibrator:
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Generating a recalibration table for {input.bams}"
-    resources: cpus=1, mem_mb=2000, time_min=1440
+        "gatk_BaseRecalibrator for {input.bams}"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """gatk BaseRecalibrator --java-options {params.maxmemory} \
         -I {input.bams} \

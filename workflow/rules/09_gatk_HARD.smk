@@ -7,18 +7,17 @@ rule hard_snp:
         snp_filtered = "../results/hard/snp_filtered.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
-        tdir = config['TEMPDIR'],
-        partition = "serial"
+        tdir = config['TEMPDIR']
     log:
-        select = "logs/hard/hard_snp_select.log",
-        filter = "logs/hard/hard_snp_filter.log"
+        select = "logs/gatk_HARD/hard_snp_select.log",
+        filter = "logs/gatk_HARD/hard_snp_filter.log"
     benchmark:
-        "benchmarks/hard/hard_snp.tsv"
+        "benchmarks/gatk_HARD/hard_snp.tsv"
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Running hard filter snp"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "gatk_HARD for SNPs"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk SelectVariants --java-options {params.maxmemory} \
@@ -51,18 +50,17 @@ rule hard_indel:
         indel_filtered = "../results/hard/indel_filtered.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
-        tdir = config['TEMPDIR'],
-        partition = "serial"
+        tdir = config['TEMPDIR']
     log:
-        select = "logs/hard/hard_indel_select.log",
-        filter = "logs/hard/hard_indel_filter.log"
+        select = "logs/gatk_HARD/hard_indel_select.log",
+        filter = "logs/gatk_HARD/hard_indel_filter.log"
     benchmark:
-        "benchmarks/hard/hard_indel.tsv"
+        "benchmarks/gatk_HARD/hard_indel.tsv"
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Running hard filter indel"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "gatk_HARD for INDELs"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk SelectVariants --java-options {params.maxmemory} \
@@ -95,18 +93,17 @@ rule merge_filtered:
         merged_pass = "../results/vcf/pass.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
-        tdir = config['TEMPDIR'],
-        partition = "serial"
+        tdir = config['TEMPDIR']
     log:
-        merge = "logs/hard/merge.log",
-        select = "logs/hard/select.log" 
+        merge = "logs/gatk_HARD/merge.log",
+        select = "logs/gatk_HARD/select.log" 
     benchmark:
-        "benchmarks/hard/merge.tsv"
+        "benchmarks/gatk_HARD/merge.tsv"
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Running hard filter indel"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "Merge filtered (logs and benchmarks in gatk_HARD)"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk MergeVcfs --java-options {params.maxmemory} \

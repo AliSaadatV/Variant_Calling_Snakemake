@@ -7,17 +7,16 @@ rule denovo:
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
-        ped = get_pedigree_command,
-        partition = "serial"
+        ped = get_pedigree_command
     log:
-        "logs/refinement/denovo.log"
+        "logs/gatk_GenotypeRefinement/denovo.log"
     benchmark:
-        "benchmarks/refinement/denovo.tsv"
+        "benchmarks/gatk_GenotypeRefinement/denovo.tsv"
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Possible denovo"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "Possible denovo (logs and benchmark in gatk_GenotypeRefinement)"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk VariantAnnotator --java-options {params.maxmemory} \

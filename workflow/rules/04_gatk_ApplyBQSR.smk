@@ -9,8 +9,7 @@ rule gatk_ApplyBQSR:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
         padding = get_wes_padding_command,
-        intervals = get_wes_intervals_command,
-        partition = "serial"
+        intervals = get_wes_intervals_command
     log:
         "logs/gatk_ApplyBQSR/{sample}.log"
     benchmark:
@@ -18,8 +17,8 @@ rule gatk_ApplyBQSR:
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Applying base quality score recalibration and producing a recalibrated BAM file for {input.bam}"
-    resources: cpus=1, mem_mb=2000, time_min=1440
+        "gatk_ApplyBQSR for {input.bam}"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """gatk ApplyBQSR --java-options {params.maxmemory} \
         -I {input.bam} \

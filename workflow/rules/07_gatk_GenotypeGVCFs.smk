@@ -7,8 +7,7 @@ rule GenotypeGVCFs:
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']), 
         tdir = config['TEMPDIR'],  
-        ped = get_pedigree_command,
-        partition = "serial"
+        ped = get_pedigree_command
     log:
         "logs/gatk_GenotypeGVCFs/{CHROMS}.log"
     benchmark:
@@ -16,8 +15,8 @@ rule GenotypeGVCFs:
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Performing joint genotyping on one or more samples pre-called with HaplotypeCaller for {input.db}"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "gatk_GenotypeGVCFs for {input.db}"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk GenotypeGVCFs --java-options {params.maxmemory} \

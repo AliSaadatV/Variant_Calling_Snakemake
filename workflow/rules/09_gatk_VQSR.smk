@@ -13,17 +13,16 @@ rule VQSR_snp:
         kg = config['KG'],
         dbsnp = config['dbSNP'],
         DP = get_vqsr_DP_option,
-        InbreedingCoeff = get_vqsr_InbreedingCoefficient_option,
-        partition = "serial"
+        InbreedingCoeff = get_vqsr_InbreedingCoefficient_option
     log:
-        "logs/VQSR/VQSR_snp.log"
+        "logs/gatk_VQSR/VQSR_snp.log"
     benchmark:
-        "benchmarks/VQSR/VQSR_snp.tsv"
+        "benchmarks/gatk_VQSR/VQSR_snp.tsv"
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Running VQSR snp"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "gatk_VQSR for SNPs"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk VariantRecalibrator --java-options {params.maxmemory} \
@@ -62,17 +61,16 @@ rule VQSR_indel:
         tdir = config['TEMPDIR'],
         mills = config['MILLS'],
         dbsnp = config['dbSNP'],
-        axiom = config['AXIOM'],
-        partition = "serial"
+        axiom = config['AXIOM']
     log:
-        "logs/VQSR/VQSR_indel.log"
+        "logs/gatk_VQSR/VQSR_indel.log"
     benchmark:
-        "benchmarks/VQSR/VQSR_indel.tsv"
+        "benchmarks/gatk_VQSR/VQSR_indel.tsv"
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Running VQSR indel"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "gatk_VQSR for INDELs"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk VariantRecalibrator --java-options {params.maxmemory} \
@@ -111,19 +109,18 @@ rule Apply_VQSR:
         select_pass = "../results/vcf/pass.vcf.gz"
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
-        tdir = config['TEMPDIR'],
-        partition = "serial"
+        tdir = config['TEMPDIR']
     log:
-        apply_vqsr_snp = "logs/VQSR/apply_VQSR_snp.log",
-        apply_vqsr_indel = "logs/VQSR/apply_VQSR_indel.log",
-        apply_vqsr_select = "logs/VQSR/apply_VQSR_select.log" 
+        apply_vqsr_snp = "logs/gatk_VQSR/apply_VQSR_snp.log",
+        apply_vqsr_indel = "logs/gatk_VQSR/apply_VQSR_indel.log",
+        apply_vqsr_select = "logs/gatk_VQSR/apply_VQSR_select.log" 
     benchmark:
-        "benchmarks/VQSR/apply_VQSR.tsv"
+        "benchmarks/gatk_VQSR/apply_VQSR.tsv"
     conda:
         "../envs/gatk4.yaml"
     message:
-        "Running apply VQSR"
-    resources: cpus=1, mem_mb=4000, time_min=1440
+        "Apply VQSR"
+    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
     shell:
         """
         gatk ApplyVQSR --java-options {params.maxmemory} \
