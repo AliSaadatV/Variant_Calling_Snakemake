@@ -33,7 +33,6 @@ rule VQSR_snp:
         -R {input.refgenome} \
         -V {input.raw_vcf} \
         --trust-all-polymorphic \
-        -AS \
         --resource:hapmap,known=false,training=true,truth=true,prior=15.0 \
         {params.hapmap} \
         --resource:omni,known=false,training=true,truth=false,prior=12.0 \
@@ -79,7 +78,6 @@ rule VQSR_indel:
         -tranche 95.0 -tranche 94.0 \
         -tranche 93.5 -tranche 93.0 -tranche 92.0 -tranche 91.0 -tranche 90.0 \
         --trust-all-polymorphic \
-        -AS \
         -R {input.refgenome} \
         -V {input.raw_vcf} \
         --resource:mills,known=false,training=true,truth=true,prior=12.0 \

@@ -29,7 +29,6 @@ rule gatk_HaplotypeCaller:
         -D {input.dbsnp} \
         -O {output.vcf} \
         --tmp-dir {params.tdir} \
-        -G StandardAnnotation -G AS_StandardAnnotation -G StandardHCAnnotation \
         {params.padding} {params.intervals} \
         {params.ped} \
         {params.other} &> {log} """

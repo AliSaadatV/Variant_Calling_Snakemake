@@ -24,7 +24,6 @@ rule GenotypeGVCFs:
         -O {output} \
         --only-output-calls-starting-in-intervals \
         --use-new-qual-calculator \
-        -G StandardAnnotation -G AS_StandardAnnotation \
         -V gendb://{input.db} \
         {params.ped} \
         -L chr{wildcards.CHROMS} \
