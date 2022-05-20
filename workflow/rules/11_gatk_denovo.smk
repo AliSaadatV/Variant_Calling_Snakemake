@@ -23,6 +23,7 @@ rule denovo:
         gatk VariantAnnotator --java-options {params.maxmemory} \
         -R {input.refgenome} \
         -V {input.refined_GQ_vcf} \
+        -A PossibleDeNovo \
         -O  {output} \
         {params.ped} \
         --tmp-dir {params.tdir} &> {log}
