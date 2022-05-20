@@ -9,7 +9,8 @@ rule refinement:
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
-        ped = get_pedigree_command
+        ped = get_pedigree_command,
+        partition = "serial"
     log:
         posterior = "logs/refinement/posterior.log",
         GQ = "logs/refinement/GQ.log"

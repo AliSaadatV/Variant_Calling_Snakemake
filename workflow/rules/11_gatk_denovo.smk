@@ -3,11 +3,12 @@ rule denovo:
         refined_GQ_vcf = "../results/vcf/refined_GQ.vcf.gz",
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
-        "../results/vcf/refined_GQ_denovo.vcf.gz"
+        protected("../results/vcf/refined_GQ_denovo.vcf.gz")
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
-        ped = get_pedigree_command
+        ped = get_pedigree_command,
+        partition = "serial"
     log:
         "logs/refinement/denovo.log"
     benchmark:

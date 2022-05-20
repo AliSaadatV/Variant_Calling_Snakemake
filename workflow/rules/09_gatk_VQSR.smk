@@ -13,7 +13,8 @@ rule VQSR_snp:
         kg = config['KG'],
         dbsnp = config['dbSNP'],
         DP = get_vqsr_DP_option,
-        InbreedingCoeff = get_vqsr_InbreedingCoefficient_option
+        InbreedingCoeff = get_vqsr_InbreedingCoefficient_option,
+        partition = "serial"
     log:
         "logs/VQSR/VQSR_snp.log"
     benchmark:
@@ -61,7 +62,8 @@ rule VQSR_indel:
         tdir = config['TEMPDIR'],
         mills = config['MILLS'],
         dbsnp = config['dbSNP'],
-        axiom = config['AXIOM']
+        axiom = config['AXIOM'],
+        partition = "serial"
     log:
         "logs/VQSR/VQSR_indel.log"
     benchmark:
