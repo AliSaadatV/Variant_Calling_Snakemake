@@ -74,11 +74,11 @@ def get_mkdup_memory(resource):
 
 def get_mkdup_xmx(resource):
     if config['DATA'] == "WES":
-        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WES'])
+        return expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WES'])
     if config['DATA'] == "WGS":
-        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WGS'])
+        return expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WGS'])
     else:
-        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WES'])
+        return expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WES'])
 
 def get_HC_memory(resource):
     if config['DATA'] == "WES":
@@ -90,12 +90,12 @@ def get_HC_memory(resource):
 
 def get_HC_xmx(resource):
     if config['DATA'] == "WES":
-        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WES'])
+        return expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WES'])
     if config['DATA'] == "WGS":
-        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WGS'])
+        return expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WGS'])
     else:
-        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WES'])
-        
+        return expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WES'])
+
 #### Set up report #####
 
 report: "report/workflow.rst"
