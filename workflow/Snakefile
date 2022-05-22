@@ -56,6 +56,46 @@ def get_wes_padding_command(resource):
         command = ""
     return command
 
+def get_bwa_memory(resource):
+    if config['DATA'] == "WES":
+        return 15000
+    if config['DATA'] == "WGS":
+        return 50000
+    else:
+        return 15000
+
+def get_mkdup_memory(resource):
+    if config['DATA'] == "WES":
+        return 40000
+    if config['DATA'] == "WGS":
+        return 80000
+    else:
+        return 40000
+
+def get_mkdup_xmx(resource):
+    if config['DATA'] == "WES":
+        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WES'])
+    if config['DATA'] == "WGS":
+        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WGS'])
+    else:
+        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP_WES'])
+
+def get_HC_memory(resource):
+    if config['DATA'] == "WES":
+        return 10000
+    if config['DATA'] == "WGS":
+        return 20000
+    else:
+        return 10000
+
+def get_HC_xmx(resource):
+    if config['DATA'] == "WES":
+        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WES'])
+    if config['DATA'] == "WGS":
+        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WGS'])
+    else:
+        expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC_WES'])
+        
 #### Set up report #####
 
 report: "report/workflow.rst"

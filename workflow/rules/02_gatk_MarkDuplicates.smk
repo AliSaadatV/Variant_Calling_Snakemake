@@ -5,7 +5,7 @@ rule gatk_MarkDuplicates:
         bam = "../results/mapped/{sample}_mkdups.bam",
         metrics = "../results/mapped/{sample}_mkdups_metrics.txt"
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['MARK_DUP']),
+        maxmemory = get_mkdup_xmx,
         tdir = config['TEMPDIR']
     log:
         "logs/gatk_MarkDuplicates/{sample}.log"
@@ -15,7 +15,7 @@ rule gatk_MarkDuplicates:
         "../envs/gatk4.yaml"
     message:
         "gatk_MarkDuplicates for {input}"
-    resources: cpus=28, mem_mb=40000, time_min=1440, partition="parallel"
+    resources: cpus=28, mem_mb=get_mkdup_memory, time_min=1440, partition="parallel"
     shell:
         """gatk MarkDuplicatesSpark --java-options {params.maxmemory} \
         -I {input} \

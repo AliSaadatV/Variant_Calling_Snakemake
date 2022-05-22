@@ -1,6 +1,8 @@
 ##############################
 ###### Overall workflow ######
 ##############################
+# Specify type of NGS sequencing ('WES' or 'WGS'). Used for choosing memory. Also used for VQSR filtering.
+DATA: "WES"
 
 # Specify the path to .ped file if you want to use it. Otherwise leave it empty.
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531972-PED-Pedigree-format
@@ -39,9 +41,6 @@ GNOMAD: "/work/gr-fe/saadat/pri/known_sites/af-only-gnomad.hg38.vcf.gz"
 # Temporary file directory
 TEMPDIR: "/scratch/saadat/temp/"
 
-# Specify type of NGS sequencing ('WES' or 'WGS'). Use for VQSR filtering
-DATA: "WES"
-
 # Inbreeding Coefficient: This option is used in VQSR. if you have less than 10 samples, or if samples are related (families), put 'EXCLUDE'. Otherwise put 'INCLUDE'
 INBREED_COEFF_FILTER: "EXCLUDE"
 
@@ -58,8 +57,10 @@ WES:
 
 # Maximum memory usage per rule/sample (eg. '40g' for 40 gigabytes, this should suffice for exomes)
 MAXMEMORY: 
-  MARK_DUP: "40g"
-  HC: "20g" #HaplotypeCaller
+  MARK_DUP_WES: "35g"
+  MARK_DUP_WGS: "70g"
+  HC_WES: "9g"
+  HC_WGS: "18g" #HaplotypeCaller
   OTHER: "4g"
 
 ##############################

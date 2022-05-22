@@ -6,7 +6,7 @@ rule gatk_HaplotypeCaller:
     output:
         vcf = "../results/called/{sample}.g.vcf.gz"
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['HC']),
+        maxmemory = get_HC_xmx,
         tdir = config['TEMPDIR'],
         padding = get_wes_padding_command,
         intervals = get_wes_intervals_command,
@@ -20,7 +20,7 @@ rule gatk_HaplotypeCaller:
         "../envs/gatk4.yaml"
     message:
         "gatk_HaplotypeCaller for {input.bams}"
-    resources: cpus=1, mem_mb=20000, time_min=1440, partition="serial"
+    resources: cpus=1, mem_mb=get_HC_memory, time_min=1440, partition="serial"
     shell:
         """gatk HaplotypeCaller --java-options {params.maxmemory} \
         -I {input.bams} \
