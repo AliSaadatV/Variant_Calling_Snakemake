@@ -6,7 +6,7 @@ rule VQSR_snp:
         recal_snp = "../results/vqsr/snp.recal",
         tranches_snp = "../results/vqsr/snp.tranches"
     params:
-        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
+        maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['VQSR']),
         tdir = config['TEMPDIR'],
         hapmap = config['HAPMAP'],
         omni = config['OMNI'],
@@ -22,7 +22,7 @@ rule VQSR_snp:
         "../envs/gatk4.yaml"
     message:
         "gatk_VQSR for SNPs"
-    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
+    resources: cpus=1, mem_mb=10000, time_min=1440, partition="serial"
     shell:
         """
         gatk VariantRecalibrator --java-options {params.maxmemory} \

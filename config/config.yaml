@@ -61,6 +61,7 @@ MAXMEMORY:
   MARK_DUP_WGS: "70g"
   HC_WES: "9g"
   HC_WGS: "18g" #HaplotypeCaller
+  VQSR: "8g"
   OTHER: "4g"
 
 ##############################
