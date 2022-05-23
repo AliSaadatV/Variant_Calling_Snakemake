@@ -23,6 +23,8 @@ Notes:
 
 * Pay attention to the partition. For Scitas (Fidis) at EPFL, partition "serial" is used for most of the workflow because we use only one cpu. Some tools support multithreading, for them we use "parallel" partition.
 
+* Make an empty *log* directory inside *workflow* before running. Slurm cannot do it!
+
 Used tools are:
 * fastqc
 * fastp

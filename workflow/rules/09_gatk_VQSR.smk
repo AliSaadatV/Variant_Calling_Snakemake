@@ -39,7 +39,7 @@ rule VQSR_snp:
         {params.omni} \
         --resource:1000G,known=false,training=true,truth=false,prior=10.0 \
         {params.kg} \
-        --resource dbsnp,known=true,training=false,truth=false,prior=2.0 \
+        --resource:dbsnp,known=true,training=false,truth=false,prior=2.0 \
         {params.dbsnp} \
         -an QD -an MQ -an MQRankSum -an ReadPosRankSum -an FS -an SOR {params.DP} {params.InbreedingCoeff} \
         -mode SNP \
