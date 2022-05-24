@@ -20,7 +20,7 @@ rule gatk_HaplotypeCaller:
         "../envs/gatk4.yaml"
     message:
         "gatk_HaplotypeCaller for {input.bams}"
-    resources: cpus=1, mem_mb=get_HC_memory, time_min=1440, partition="serial"
+    resources: cpus=1, mem_mb=get_HC_memory, time_min=4310, partition="serial"
     shell:
         """gatk HaplotypeCaller --java-options {params.maxmemory} \
         -I {input.bams} \
