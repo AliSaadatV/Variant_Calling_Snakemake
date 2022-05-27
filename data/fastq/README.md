@@ -1,0 +1,1 @@
+Put the fastq files here. Reads must be named like ID_R1.fastq.gz and ID_R2.fastq.gz (not ID_1.fastq.gz and ID_2.fastq.gz)

@@ -6,12 +6,12 @@ DATA: "WES"
 
 # Specify the path to .ped file if you want to use it. Otherwise leave it empty.
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531972-PED-Pedigree-format
-PED: "/scratch/saadat/varicella/Variant_Calling_Snakemake/data/pedigrees/pedigree.ped"
+PED: """
 
 # Choose between ('VQSR' and 'HARD')
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531112?id=2806
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360037499012
-FILTER: "HARD"
+FILTER: "VQSR"
 
 # File path to the reference genome (.fasta)
 REFGENOME: "/work/gr-fe/saadat/Reference_Genome/GRCH38_no_alt/GCA_000001405.15_GRCh38_no_alt_analysis_set.fa.gz"

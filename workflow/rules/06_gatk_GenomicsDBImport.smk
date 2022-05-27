@@ -4,7 +4,7 @@ rule GenomicsDBImport:
         refgenome = expand("{refgenome}", refgenome = config['REFGENOME'])
     output:
         db = directory("../results/genomicsDB/{CHROMS}db"),
-        tar = "analysis/genomicsDB/{CHROMS}db.tar"
+        tar = "../results/genomicsDB/{CHROMS}db.tar"
     params:
         gvcfs=lambda wildcards, input: [f" -V {v}" for v in input["gvcfs_list"]],
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),

@@ -8,7 +8,7 @@ rule bwa_mem:
     params:
         readgroup = "'@RG\\tID:{sample}_rg1\\tLB:lib1\\tPL:bar\\tSM:{sample}\\tPU:{sample}_rg1'"
     log:
-        fastp_json = "logs/fastp/{sample}.json",
+        fastp_json = "logs/fastp/{sample}_fastp.json",
         fastp_html = "logs/fastp/{sample}.html",
         fastp_log = "logs/fastp/{sample}.log",
         bwa = "logs/bwa/{sample}.log",

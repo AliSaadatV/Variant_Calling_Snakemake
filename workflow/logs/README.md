@@ -1,0 +1,1 @@
+Logs from slurm and from tools will be stored in this directory.
