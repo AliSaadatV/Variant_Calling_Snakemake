@@ -16,7 +16,7 @@ rule GenotypeGVCFs:
         "../envs/gatk4.yaml"
     message:
         "gatk_GenotypeGVCFs for {input.db}"
-    resources: cpus=1, mem_mb=4000, time_min=1440, partition="serial"
+    resources: cpus=1, mem_mb=4000, time_min=4310, partition="serial"
     shell:
         """
         gatk GenotypeGVCFs --java-options {params.maxmemory} \

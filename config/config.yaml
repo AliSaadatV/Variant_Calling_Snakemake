@@ -6,7 +6,7 @@ DATA: "WES"
 
 # Specify the path to .ped file if you want to use it. Otherwise leave it empty.
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531972-PED-Pedigree-format
-PED: """
+PED: ""
 
 # Choose between ('VQSR' and 'HARD')
 # Check https://gatk.broadinstitute.org/hc/en-us/articles/360035531112?id=2806
