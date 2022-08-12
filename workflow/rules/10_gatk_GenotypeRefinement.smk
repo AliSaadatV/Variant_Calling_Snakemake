@@ -34,6 +34,7 @@ rule refinement:
         -R {input.refgenome} \
         -V {output.refined} \
         --genotype-filter-expression "GQ < 20" --genotype-filter-name "lowGQ" \
+        --genotype-filter-expression "DP < 10" --genotype-filter-name "lowDP" \
         -O {output.refined_GQ} \
         --tmp-dir {params.tdir} &> {log.GQ}
         """
