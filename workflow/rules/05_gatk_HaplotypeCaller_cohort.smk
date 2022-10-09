@@ -8,8 +8,7 @@ rule gatk_HaplotypeCaller:
     params:
         maxmemory = get_HC_xmx,
         tdir = config['TEMPDIR'],
-        padding = get_wes_padding_command,
-        intervals = get_wes_intervals_command,
+        intervals = get_intervals_command,
         ped = get_pedigree_command,
         other = "-ERC GVCF"
     log:
@@ -28,6 +27,6 @@ rule gatk_HaplotypeCaller:
         -D {input.dbsnp} \
         -O {output.vcf} \
         --tmp-dir {params.tdir} \
-        {params.padding} {params.intervals} \
+        {params.intervals} \
         {params.ped} \
         {params.other} &> {log} """
