@@ -8,7 +8,7 @@ rule gatk_ApplyBQSR:
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
-        intervals = get_wes_intervals_command
+        intervals = get_intervals_command
     log:
         "logs/gatk_ApplyBQSR/{sample}.log"
     benchmark:
