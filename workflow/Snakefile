@@ -42,20 +42,6 @@ def get_vqsr_InbreedingCoefficient_option(resource):
         command = "-an InbreedingCoeff"
     return command
 
-#def get_wes_intervals_command(resource):    
-#    command = ""
-#    command = "-L " + config['WES']['INTERVALS'] + " "
-#    if config['WES']['INTERVALS'] == "":
-#        command = ""
-#    return command
-
-#def get_wes_padding_command(resource):
-#    command = ""
-#    command = "--ip " + config['WES']['PADDING'] + " " 
-#    if config['WES']['PADDING'] == "":
-#        command = ""
-#    return command
-
 def get_intervals_command(resource):
     if config['DATA'] == 'WES':
         command = "-L " + config['WES']['INTERVALS'] + " " + "--ip " + config['WES']['PADDING'] + " " 

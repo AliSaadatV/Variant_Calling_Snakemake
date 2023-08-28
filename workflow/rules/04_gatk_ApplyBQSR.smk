@@ -8,7 +8,6 @@ rule gatk_ApplyBQSR:
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
-        padding = get_wes_padding_command,
         intervals = get_wes_intervals_command
     log:
         "logs/gatk_ApplyBQSR/{sample}.log"
@@ -26,4 +25,4 @@ rule gatk_ApplyBQSR:
         -R {input.refgenome} \
         -O {output} \
         --tmp-dir {params.tdir} \
-        {params.padding} {params.intervals} &> {log}"""
+        {params.intervals} &> {log}"""

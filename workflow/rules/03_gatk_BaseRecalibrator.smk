@@ -7,7 +7,6 @@ rule gatk_BaseRecalibrator:
     params:
         maxmemory = expand('"-Xmx{maxmemory}"', maxmemory = config['MAXMEMORY']['OTHER']),
         tdir = config['TEMPDIR'],
-        padding = get_wes_padding_command,
         intervals = get_wes_intervals_command,
         recalibration_resources = get_recal_resources_command
     log:
@@ -25,4 +24,4 @@ rule gatk_BaseRecalibrator:
         -R {input.refgenome} \
         -O {output} \
         --tmp-dir {params.tdir} \
-        {params.padding} {params.intervals} {params.recalibration_resources} &> {log}"""
+        {params.intervals} {params.recalibration_resources} &> {log}"""
